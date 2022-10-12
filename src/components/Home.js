@@ -7,13 +7,9 @@ import Logout from './Logout';
 import { InlineWidget } from "react-calendly";
         
 const Home = () => {
-    const { token, setToken } = useToken();
-    // const [usename, setusername] = Login(token)
+    const { token } = useToken();
     const [Home, setHome] = useState([])
-    const [User, setUser] = useState([])
-    // const [usernameCheck, setusernameCheck] = useState([])
-    // const [isRequired, setisRequired] = useState([token])
-    const [Load, setLoad] = useState([])
+    const [Load] = useState([])
     
     const [isLoading, setisLoading] = useState(true)
     const nextRoute = useHistory();
@@ -33,88 +29,41 @@ const Home = () => {
         }).then(res => {
             
             if (!res.ok){
-                // setisLoading(false)
+                setisLoading(true)
                 
                 sessionStorage.clear()
                 if(!token){
                 setTimeout(()=>{
-                    // <Login/>
+                    
                     nextRoute.push('/Login')
-                    // nextRoute.replace('/Login', '/')
+                    
                 }, 2000)}
-                
-                // console.log(res.ok)
-                
-                // console.log(status)
-                // console.log(res.ok)
                 return res.json()
-                // nextRoute.push('/')
+
             }else{
-                // setisLoading(true)
+                setisLoading(false)
                 return res.json()
-                // const toke = JSON.parse(sessionStorage.getItem('token'))
-                // console.log(toke?.refToken)
-                // console.log(res)
             } 
         } ).then(jsonResponse => {
-            // if(jsonResponse.message==="Unauthorized" || jsonResponse.message==="Forbidden"){
                 isMounted && setHome(jsonResponse)
                 console.log(jsonResponse)
-            // }else{
-            //     setHome(jsonResponse)
-            //     console.log(jsonResponse)
-            // }
-                // console.log(Load)
-            // console.log(isLoading)
+            
         })        
-        // const toke = localStorage.setItem('token', tokens);
-        // const toker = localStorage.getItem('token');
-        // const tokes = JSON.parse(toker);
-            // if (!tokens || !toke){
-            //     nextRoute.push('/')
-            // }
-            // console.log(userToken.username)
-        // const emp = [];
-        // emp.push(userToken)
-        // console.log(emp)
 
-        // const gt = emp.map(x=>
-        //     x)
-
-        // console.log(gt)
 
         }catch(err){
             console.error(err)
+            return () => {
+                setisLoading(false)
+                
+            }
         }
-
-        return () => {
-            isMounted = false
-            controller.abort()
-        }
-
 
           
     }, [])
     
 
-    // looping out the arrays from the database:
-        
-        // console.log(empt)
-
-        // const namemap = Home.map(Main=>
-        //     <div key={Home._id}>
-        //         {Main.name}
-        //     </div>
-        //     )
-    //     const empt = []
-    // for(var i= 0; i<Home.length; i++){
-    //     empt.push(Home[i])
-    // }
-        // const usermap = Home.map(Main=> 
-        //     <div key={Main._id}>
-        //        {Main.name}
-        //     </div>)
-            // console.log(testmap)
+    
     
     return (
         
@@ -127,10 +76,11 @@ const Home = () => {
                     <li><NavLink className='nav' to = '/User'>Profile</NavLink></li>
                 </ul>
             </nav>
+            {isLoading? <p>Loading...</p>:
             <p>{Home.status===0? <Redirect to="Login" />: Home.map(Main=> 
             <div key={Main._id}>
                Hello, {Main.name}
-            </div>)}</p>
+            </div>)}</p>}
             <div>
                 {token? <NavLink to = '/Logout'>Logout</NavLink> : ""}
             </div>

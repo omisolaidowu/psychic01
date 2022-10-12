@@ -47,5 +47,25 @@ require("crypto").randomBytes(64).toString('hex')
 fetchMe();
 
 
+// looping out the arrays from the database:
+        
+        // console.log(empt)
+
+        // const namemap = Home.map(Main=>
+        //     <div key={Home._id}>
+        //         {Main.name}
+        //     </div>
+        //     )
+    //     const empt = []
+    // for(var i= 0; i<Home.length; i++){
+    //     empt.push(Home[i])
+    // }
+        // const usermap = Home.map(Main=> 
+        //     <div key={Main._id}>
+        //        {Main.name}
+        //     </div>)
+            // console.log(testmap)
+
+
 
 

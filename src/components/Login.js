@@ -12,16 +12,22 @@ export default function Login (){
     const [Pass, setPass] = useState([]);
     const [messageME, setmessageMe] = useState('');
     const { token, setToken } = useToken();
+    const [isLoading, setisLoading] = useState(true)
     const history = useHistory();
     
     
     const submitHandler = e => {
+        const controller = new AbortController();
+
+        try{
+
         e.preventDefault();
 
         fetch(
             "http://localhost:8080/login",
             {
                 method: 'POST',
+                signal: controller.signal,
                 headers: 
                 {
                     'Content-type': 'application/json',
@@ -34,12 +40,14 @@ export default function Login (){
                 })
             }).then(res=>{
                 if (res.ok){
+                    setisLoading(false)
                     setTimeout(()=>{
                         history.push('/')
                     }, 1000)
                 
                     return res.json()
                 }else{
+                    setisLoading(true)
                     return res.json()
                 }
             }).then(jsonResponse=>{
@@ -52,25 +60,22 @@ export default function Login (){
                     setToken(jsonResponse)
                     console.log(jsonResponse)
                     
-                    // console.log(jsonResponse.token)
                 }
-                // else{
-                //     setmessageMe(jsonResponse)
-                // }
-                
-                // setToken(messageME.token)
-
-               
+  
 
             })
 
            
             
-            // console.log(Token)
-            
+    }catch{
+        setisLoading(true)
+    }
+        // controller.abort()
     }
     return(
+        
         <div class="login-body">
+            
         <div class="login-box">
             <h2>Login</h2>
             <form onSubmit={submitHandler}>
